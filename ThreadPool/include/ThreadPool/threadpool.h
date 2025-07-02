@@ -68,7 +68,9 @@ template<typename Func,typename... Args>
 auto ThreadPool::submitTask(Func&& func, Args&&...args) ->std::future<decltype(func(args...))>
 {
     using ReturnType = decltype(func(args...));
-    auto task = std::make_shared<std::packaged_task<ReturnType()>>(std::bind(std::forward<Func>(func),std::forward<Args>(args)...));
+    std::function<ReturnType()> func_ = std::bind(std::forward<Func>(func),std::forward<Args>(args)...);
+    auto task = std::make_shared<std::packaged_task<ReturnType()>>(func_);
+    //auto task = std::make_shared<std::packaged_task<ReturnType()>>(std::bind(std::forward<Func>(func),std::forward<Args>(args)...));
 
     std::future<ReturnType> future = task->get_future();
 
