@@ -1,16 +1,10 @@
 // 线程池项目-最终版.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
 
-#include <iostream>
-#include <functional>
-#include <thread>
-#include <future>
-#include <chrono>
+
+#include "ThreadPool/threadpool.h"
+
 using namespace std;
-
-#include "threadpool.hpp"
-
-
 /*
 如何能让线程池提交任务更加方便
 1. pool.submitTask(sum1, 10, 20);
@@ -30,7 +24,7 @@ int sum1(int a, int b)
 }
 int sum2(int a, int b, int c)
 {
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(20));
     return a + b + c;
 }
 // io线程 
@@ -61,11 +55,10 @@ int main()
     //创建线程池
     ThreadPool pool;
 
-    //设置线程池模式
-    pool.setMode(PoolMode::MODE_CACHED);
 
     //开启线程池，指定其数量
     pool.start(2);
+    pool.setPoolMode(ThreadMode::MODE_CACHED);
 
     future<int> r1 = pool.submitTask(sum1, 1, 2);
     future<int> r2 = pool.submitTask(sum2, 1, 2, 3);

@@ -1,8 +1,7 @@
 #!/bin/bash
 
-set -x
+set -x  # show commands
 
-rm -rf `pwd`/build/*
-cd `pwd`/build &&
-	cmake .. &&
-	make -j10
+rm  -rf `pwd`/build/*
+
+cd `pwd`/build && cmake .. && make -j10
